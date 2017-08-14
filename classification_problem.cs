@@ -13,7 +13,6 @@ using Accord.MachineLearning.DecisionTrees.Learning;
 using Accord.MachineLearning;
 using Accord.Statistics.Filters;
 using Accord.IO;
-using Alea;
 using System.Collections.Generic;
 
 namespace ConsoleApplication1

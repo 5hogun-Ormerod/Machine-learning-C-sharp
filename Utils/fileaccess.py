@@ -11,7 +11,7 @@ from tqdm import tqdm
 import numpy as np
 from collections import deque
 
-class fast_file():
+class Fast_File():
     
     #
     #

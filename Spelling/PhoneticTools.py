@@ -1,6 +1,6 @@
 import nltk
 import string
-
+from Spelling import words
 
 word_to_phonemes = nltk.corpus.cmudict.dict()
 

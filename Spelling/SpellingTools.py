@@ -18,12 +18,12 @@ vowel_confusion = {'a':{'e':0.4,'i':0.3,'o':0.1,'u':0.1,'':0.1},
                    'i':{'a':0.2,'e':0.4,'o':0.1,'u':0.1,'':0.1,'y':0.1},
                    'o':{'a':0.1,'e':0.1,'i':0.1,'u':0.6,'':0.1},
                    'u':{'a':0.1,'e':0.1,'i':0.1,'o':0.6,'':0.1},
-                   'y':{'i':1.0}}
+                   'y':{'i':0.5,'y':0.5}}
 
 
 consonant_confusion = {'c':{'s':0.2, 'c':0.6, 'cc':0.2},
                        'l':{'r':0.2, 'll':0.5,'w':0.3},
-                       's':{'c':0.5, 'ss':0.2},
+                       's':{'c':0.5, 'ss':0.2,'s':0.3},
                        'm':{'n':0.2, 'mm':0.2,'m':0.6},
                        'n':{'m':0.3,'nn':0.4,'n':0.3},
                        'r':{'w':0.2,'l':0.4, 'rr':0.4},
@@ -32,15 +32,16 @@ consonant_confusion = {'c':{'s':0.2, 'c':0.6, 'cc':0.2},
 
 
 
-misspelling_config = {'phonetic':0.05,
-                      'vowel':0.1,
+misspelling_config = {'phonetic':0.03,
+                      'vowel':0.07,
                       'consonant':0.03,
-                      'doubling':0.05,
-                      'concatenation':0.01}
+                      'doubling':0.02,
+                      'concatenation':0.02}
 
-doubles = 'cmsprt'
+doubles = 'cmnsprt'
 
 def random_misspelling(text):
+    text = text.lower()
     tokens = tokenize(text)
     tokens = __random_phonetic_error(tokens)
     new_tokens = []
@@ -61,7 +62,6 @@ def __random_phonetic_error(tokens):
             if random.random() < misspelling_config['phonetic']:
                 choices = phonetic_errors[word]
                 new_word = random.choice(choices)
-                print("{} -> {}".format(word,new_word))
             else:
                 new_word = word
         else:

@@ -11,22 +11,46 @@ from tqdm import tqdm
 import numpy as np
 from collections import deque
 
-class Fast_File():
+class Fast_File(object):
     
-    #
-    #
+    # This is a wrapper for the process of enumerating the endlines of a 
+    # file, then accessing lines using the mmap function. This is essentially
+    # a faster version of the linecache which is slightly faster than 
+    # linecache while performing approximately the same function up to
+    # conversion from bytes to string.
     
-    def __init__(self, file = None):
+    def __init__(self, 
+                 file = None):
+        
         if file is not None:
             self.cache(file)
         
     def cache(self, file):
+        """
+        Parameters
+        ----------
+        file : string
+            The path of the file that is to be cached
+
+        Returns
+        -------
+        None.
+        
+        We build this function so that the same instance of a Fast_File
+        may be used for a sequence of files. One just needs to cache them
+        sequentially.
+        
+        """
         assert os.path.exists(file), "File not found"
         self.file = file
         self.linepoints = deque()
         self.linepoints.append(0)
         pos = 0
         with open(file,'r') as fp:
+            
+            # This loop iterates through the file and appends each position
+            # of an endline character. 
+            
             for _ in tqdm(range(os.path.getsize(self.file))):
                 c = fp.read(1)
                 if not c:
@@ -34,12 +58,26 @@ class Fast_File():
                 if c == '\n':
                     self.linepoints.append(pos)
                     pos += 1
+                    # This is due to the endline being preceeded by the 
+                    # linebreak.
                 pos += 1
         self.fp = open(self.file,'r+')
         self.mm = mmap.mmap(self.fp.fileno(),0 )
         self.linepoints.append(pos)
                 
     def getline(self, i):
+        """
+        Parameters
+        ----------
+        i : inte
+            DESCRIPTION.
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        """
         return self.mm[self.linepoints[i]+2:self.linepoints[i+1]]
     
     def __len__(self):
@@ -50,10 +88,10 @@ class Fast_File():
         self.fp.close()
         
     def save(self, path):
-        np.save(path, (self.file, linepoints))
+        np.save(path, (self.file, self.linepoints))
         
     def load(self, path):
-        self.file, self.linepoints = np.load(path, allow_pickle)
+        self.file, self.linepoints = np.load(path, allow_pickle= True)
         self.fp = open(self.file,'r+')
         self.mm = mmap.mmap(self.fp.fileno(),0 )
 

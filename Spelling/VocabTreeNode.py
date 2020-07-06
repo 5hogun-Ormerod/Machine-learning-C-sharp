@@ -112,5 +112,8 @@ class VocabTreeNode():
     
     def vocab(self):
         return self.vocabRecursive("")
+    
+    def correct(self, text):
+        
         
         

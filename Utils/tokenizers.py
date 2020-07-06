@@ -2,6 +2,7 @@
 
 from nltk.tokenize import RegexpTokenizer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+from nltk.tokenize import sent_tokenize
 
 __pattern = r'''(?x)       
         (?:[A-Z]\.)+      

@@ -50,8 +50,8 @@ class Fast_File(object):
             
             # This loop iterates through the file and appends each position
             # of an endline character. 
-            
-            for _ in tqdm(range(os.path.getsize(self.file))):
+            qbar = tqdm(range(os.path.getsize(self.file)))
+            for _ in qbar:
                 c = fp.read(1)
                 if not c:
                     break
@@ -60,10 +60,14 @@ class Fast_File(object):
                     pos += 1
                     # This is due to the endline being preceeded by the 
                     # linebreak.
+                    
+                    if len(self.linepoints) % 1000 == 0:
+                        qbar.set_description("{} lines read".format(len(self.linepoints)))
                 pos += 1
         self.fp = open(self.file,'r+')
         self.mm = mmap.mmap(self.fp.fileno(),0 )
         self.linepoints.append(pos)
+        self.linepoints = list(self.linepoints)
                 
     def getline(self, i):
         """

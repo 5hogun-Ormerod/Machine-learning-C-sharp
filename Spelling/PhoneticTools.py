@@ -1,6 +1,7 @@
 import nltk
 import string
 from Spelling import words
+from Utils import tokenize
 
 word_to_phonemes = nltk.corpus.cmudict.dict()
 
@@ -39,7 +40,7 @@ def word_break(word):
     if len(possibilities) > 0: 
         length = min([len(x) for x in possibilities])
         least_length = [p for p in possibilities if len(p) == length]
-        return max(least_length, key = lambda x: sum([SpellingTools.WordTree.vocab[y] for y in x]))
+        return least_length[0]
     else:
         return [word]
 
@@ -52,3 +53,5 @@ def text_to_phonemes(text):
     return sounds
 
 phonetic_errors = {k: sum([phonemes_to_word[' '.join(x)] for x in word_to_phonemes[k]],list()) for k in word_to_phonemes if (k in words) and len(set(sum([phonemes_to_word[' '.join(x)] for x in word_to_phonemes[k]],list()))) > 1}
+
+

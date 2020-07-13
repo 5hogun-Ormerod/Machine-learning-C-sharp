@@ -8,6 +8,7 @@ Created on Tue Jun 23 13:36:56 2020
 import sys
 import numpy as np
 from tqdm import tqdm
+from Utils import tokenize
 
 
 class VocabTreeNode():
@@ -114,6 +115,10 @@ class VocabTreeNode():
         return self.vocabRecursive("")
     
     def correct(self, text):
-        
+        pass
+    
+    
+    def biuld_from_file(self, path):
+        with open(path) as fp
         
         

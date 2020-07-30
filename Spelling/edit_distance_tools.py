@@ -16,5 +16,5 @@ def Edits1(word):
     return set(deletes + transposes + replaces + inserts)
 
 def EditDistance(str1, str2):
-    return ed.eval()
+    return ed.eval(str1,str2)
 

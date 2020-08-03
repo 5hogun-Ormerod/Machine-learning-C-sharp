@@ -5,7 +5,10 @@ Created on Tue Jun 23 13:41:15 2020
 @author: Christopher Ormerod
 """
 
-from Spelling.Dictionary import words
-from Spelling.edit_distance_tools import *
-from Spelling.PhoneticTools import word_to_phonemes, phonemes_to_word, phonetic_errors
+from .Dictionary import words
+from .edit_distance_tools import EditDistance
+from .PhoneticTools import phonetic_distance
+from .doublemetaphone import dm
+
+
 

@@ -1,7 +1,12 @@
 import nltk
 import string
-from Spelling import words
+import numpy as np
+
+from .doublemetaphone import dm
+from .Dictionary import words
+from .edit_distance_tools import EditDistance
 from Utils import tokenize
+
 
 word_to_phonemes = nltk.corpus.cmudict.dict()
 
@@ -54,4 +59,12 @@ def text_to_phonemes(text):
 
 phonetic_errors = {k: sum([phonemes_to_word[' '.join(x)] for x in word_to_phonemes[k]],list()) for k in word_to_phonemes if (k in words) and len(set(sum([phonemes_to_word[' '.join(x)] for x in word_to_phonemes[k]],list()))) > 1}
 
-
+def phonetic_distance(word1, word2):
+    distances = []
+    ph1 = dm(word1)
+    ph2 = dm(word2)
+    for m1 in ph1:
+        for m2 in ph2:
+            if (m1 != "") and (m2!= ""):
+                distances.append(EditDistance(m1,m2))
+    return np.mean(distances)

@@ -1,9 +1,9 @@
-from transformers import ReformerModelWithLMHead
-from transformers import (
-    ReformerModelWithLMHead,
-    ReformerTokenizer,
-    ReformerConfig,
-    Trainer,
-    DataCollator,
-    TrainingArguments,
-)
+from transformers import ReformerModel
+from NeuralNetworks.core import SequenceToSequenceEngine
+
+class ReformerLanguageEngine(SequenceToSequenceEngine)
+
+    def __init__(self):
+        pass
+    
+    

@@ -10,6 +10,8 @@ import os
 from tqdm import tqdm
 import numpy as np
 from collections import deque
+import random
+from tqdm import tqdm
 
 class Fast_File(object):
     
@@ -20,10 +22,39 @@ class Fast_File(object):
     # conversion from bytes to string.
     
     def __init__(self, 
-                 file = None):
+                 file = None,
+                 shuffle = True,
+                 status_bar = True,
+                 string = True):
+        
+        self.shuffle = shuffle
+        self.status_bar = status_bar
+        self.string = string
         
         if file is not None:
             self.cache(file)
+        self.count = 0
+            
+    def __iter__(self):
+        return self
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self,  arg_type, value, traceback):
+        self.close()
+    
+    def __next__(self):
+        if self.count == 0:
+            self.qbar = tqdm(range(len(self)-1))
+        if self.count < len(self):
+            text = self.getline(self.order[self.count])
+            self.count += 1
+            if self.status_bar == True:
+                self.qbar.update()
+            return text
+        else:
+            raise StopIteration
         
     def cache(self, file):
         """
@@ -68,12 +99,17 @@ class Fast_File(object):
         self.mm = mmap.mmap(self.fp.fileno(),0 )
         self.linepoints.append(pos)
         self.linepoints = list(self.linepoints)
+        if self.shuffle == True:
+            self.order = list(range(len(self)))
+            random.shuffle(self.order)
+        else:
+            order = list(range(len(self)))
                 
     def getline(self, i):
         """
         Parameters
         ----------
-        i : inte
+        i : int
             DESCRIPTION.
 
         Returns
@@ -82,7 +118,11 @@ class Fast_File(object):
             DESCRIPTION.
 
         """
-        return self.mm[self.linepoints[i]+2:self.linepoints[i+1]]
+        out = self.mm[self.linepoints[i]+2:self.linepoints[i+1]]
+        if self.string == True:
+            return str(out)
+        else:
+            return out
     
     def __len__(self):
         return len(self.linepoints)-1

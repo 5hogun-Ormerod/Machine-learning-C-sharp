@@ -8,5 +8,5 @@ Created on Mon Jun 29 09:16:24 2020
 from VocabTreeNode import VocabTreeNode
 from Dictionary import words
 
-WordTree = VocabTreeNode(words)
-
+def count_vocab(dataset):
+    pass

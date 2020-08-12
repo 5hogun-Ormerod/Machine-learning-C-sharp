@@ -5,7 +5,7 @@
 This module is a base module for my spell-correction code. It serves the 
 purpose of returning all elements in a vocabulary of a specified edit distance
 in addition to returning the phonetic edit distance. The code is based
-on a Tree structure that 
+on a Tree structure that  
 """
 
 import sys

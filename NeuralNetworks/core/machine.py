@@ -13,11 +13,12 @@ class SequenceToSequenceEngine(ABC):
     def convert(self, text):
         raise NotImplemented
         
-    def fit(self, s2s_dataset):
+    def fit(self, dataset, text_col, score_col):
         raise NotImplementedError
+    
         
         
-class SequenceToSequenceEngine(ABC):
+class SequenceToLabelEngine(ABC):
     
     def __init__(self):
         pass
@@ -31,17 +32,4 @@ class SequenceToSequenceEngine(ABC):
     def fit(self, class_dataset):
         raise NotImplementedError
         
-    
-class LanguageModelEngine(ABC):
-    
-    def __init__(self):
-        pass
-    
-    def save(self, path):
-        raise NotImplemented
-                
-    def generate(self, text):
-        raise NotImplemented
         
-    def fit(self, text_dataset):
-        raise NotImplementedError

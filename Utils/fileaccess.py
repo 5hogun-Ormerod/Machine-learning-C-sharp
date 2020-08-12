@@ -12,8 +12,9 @@ import numpy as np
 from collections import deque
 import random
 from tqdm import tqdm
+from torch.utils.data import Dataset
 
-class Fast_File(object):
+class Fast_File(Dataset):
     
     # This is a wrapper for the process of enumerating the endlines of a 
     # file, then accessing lines using the mmap function. This is essentially
@@ -23,17 +24,21 @@ class Fast_File(object):
     
     def __init__(self, 
                  file = None,
-                 shuffle = True,
+                 shuffle = False,
                  status_bar = True,
                  string = True):
         
         self.shuffle = shuffle
+        self.file = file
         self.status_bar = status_bar
         self.string = string
         
         if file is not None:
             self.cache(file)
         self.count = 0
+    
+    def __repr__(self):
+        return "Dataset(schema: ('text':str ), path = {}, rows = {})".format(self.file,len(self))
             
     def __iter__(self):
         return self
@@ -46,7 +51,7 @@ class Fast_File(object):
     
     def __next__(self):
         if self.count == 0:
-            self.qbar = tqdm(range(len(self)-1))
+            self.qbar = tqdm(range(len(self)))
         if self.count < len(self):
             text = self.getline(self.order[self.count])
             self.count += 1
@@ -54,6 +59,7 @@ class Fast_File(object):
                 self.qbar.update()
             return text
         else:
+            self.count = 0
             raise StopIteration
         
     def cache(self, file):
@@ -70,7 +76,6 @@ class Fast_File(object):
         We build this function so that the same instance of a Fast_File
         may be used for a sequence of files. One just needs to cache them
         sequentially.
-        
         """
         assert os.path.exists(file), "File not found"
         self.file = file
@@ -103,29 +108,32 @@ class Fast_File(object):
             self.order = list(range(len(self)))
             random.shuffle(self.order)
         else:
-            order = list(range(len(self)))
-                
+            self.order = list(range(len(self)))
+    
+    def __getitem__(self, index):
+        return self.getline(index)
+    
     def getline(self, i):
         """
         Parameters
         ----------
         i : int
-            DESCRIPTION.
+            The line number of the text that needs to be returned.
 
         Returns
         -------
-        TYPE
-            DESCRIPTION.
+        str or bytes
+            Return the i-th line of the file
 
         """
         out = self.mm[self.linepoints[i]+2:self.linepoints[i+1]]
         if self.string == True:
-            return str(out)
+            return out.decode("utf-8", "ignore")
         else:
             return out
     
     def __len__(self):
-        return len(self.linepoints)-1
+        return len(self.linepoints)-2
     
     def close(self):
         self.mm.close()
@@ -138,6 +146,6 @@ class Fast_File(object):
         self.file, self.linepoints = np.load(path, allow_pickle= True)
         self.fp = open(self.file,'r+')
         self.mm = mmap.mmap(self.fp.fileno(),0 )
+        self.order = list(range(len(self)))
 
                 
-      

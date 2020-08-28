@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from nlp import load_dataset
 from NeuralNetworks.core.nn_dataset import DataFrameSet
-
+import pandas as pd
 
 def convert_path(path, columns):
     train = pd.read_csv('{}/train.csv'.format(path), header = None) 
@@ -33,12 +33,12 @@ gigaword = lambda : load_dataset('gigaword')
 squadv2 = lambda :load_dataset('squad_v2')
 
 def kaggle_aes(essay, fold):
-    assert split in range(5), "Split out of range"
+    assert fold in range(5), "Split out of range"
     assert essay in range(1,9), "Essay number out of range"
     
-    train_ids = set(pd.read_csv("c:/data/kaggle/splits/fold_{}/train_ids.txt".format(split), header = None)[0])
-    test_ids = set(pd.read_csv("c:/data/kaggle/splits/fold_{}/test_ids.txt".format(split), header = None)[0])
-    validation_ids = set(pd.read_csv("c:/data/kaggle/splits/fold_{}/dev_ids.txt".format(split), header = None)[0])
+    train_ids = set(pd.read_csv("c:/data/kaggle/splits/fold_{}/train_ids.txt".format(fold), header = None)[0])
+    test_ids = set(pd.read_csv("c:/data/kaggle/splits/fold_{}/test_ids.txt".format(fold), header = None)[0])
+    validation_ids = set(pd.read_csv("c:/data/kaggle/splits/fold_{}/dev_ids.txt".format(fold), header = None)[0])
     
     data = pd.read_excel("c:/data/kaggle/training_set_rel3.xlsx")
     

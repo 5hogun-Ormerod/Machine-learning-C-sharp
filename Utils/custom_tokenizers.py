@@ -21,7 +21,7 @@ class word_tokenizer(tokenizer):
                         | [][.,;"'?():_`-]  
                         '''
     
-        self.__tokenizer = RegexpTokenizer(__pattern)
+        self.__tokenizer = RegexpTokenizer(self.__pattern)
         self.__detokenizer = TreebankWordDetokenizer()
 
     def tokenize(self, text):
@@ -37,7 +37,7 @@ class word_tokenizer(tokenizer):
         pass
 
     def vocab(self):
-        return 
+        return 0
     
     def __fit_file(self, file):
         self.source_file = file
@@ -53,9 +53,30 @@ class word_tokenizer(tokenizer):
             self.__fit_file(x)
         else:
             self.__fit_iterable(x)
-        
-        
+
+class split_tokenizer(tokenizer):
     
+    def __init__(self):
+        pass
+    
+    def tokenize(self, text):
+        return text.split()
+
+    def detokenize(self, iterable):
+        return ' '.join(iterable)
+
+    def fit(self, iterable):
+        pass
+    
+    def encode(self, text):
+        pass
+    
+    def decode(self, iterable):
+        pass
+
+    def vocab(self):
+        return 0
+        
 class character_tokenizer(tokenizer):
     
     def __init__(self):
@@ -82,7 +103,7 @@ class character_tokenizer(tokenizer):
         pass
 
 
-class BPE_tokenizer(tokenizer):
+class sentencepiece_tokenizer(tokenizer):
     
     def __init__(self, lower = False, vocab_size = 1000):
         self.model = io.BytesIO()
@@ -117,6 +138,17 @@ class BPE_tokenizer(tokenizer):
         self.sp = sentencepiece.SentencePieceProcessor(model_proto=self.model.getvalue())
             
     def fit(self, x):
+        """
+        Parameters
+        ----------
+        x : str or Iterable
+            If the type is a str, we assumed that string is a path to a file
+            with text in it, hence, is handled by the Fast_File class, else
+            it is to be handled directly as an TextSet.
+
+            This fit command should fit the optimal encoding using googles 
+            sentencepiece encoding.
+        """
         if isinstance(x, str):
             self.__fit_file(x)
         else:
@@ -130,5 +162,4 @@ class BPE_tokenizer(tokenizer):
     
     def encode(self, text):
         pass
-        
-    
+

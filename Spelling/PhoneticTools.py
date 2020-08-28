@@ -5,7 +5,6 @@ import numpy as np
 from .doublemetaphone import dm
 from .Dictionary import words
 from .edit_distance_tools import EditDistance
-from Utils import tokenize
 
 
 word_to_phonemes = nltk.corpus.cmudict.dict()

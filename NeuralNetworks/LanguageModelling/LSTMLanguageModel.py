@@ -29,13 +29,18 @@ class LSTMmodel(nn.Module):
         def forward(self, X):
             pass
             
+        
+
 
 
 class LSTMSeq2Seq(SequenceToSequenceEngine):
     
     def __init__(self, units, layers)
         
-    
+        
+        
+        
+        
 
             
     

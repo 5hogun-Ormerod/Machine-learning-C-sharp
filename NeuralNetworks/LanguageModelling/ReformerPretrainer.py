@@ -63,5 +63,5 @@ from Utils.fileaccess import Fast_File
 
 ff = Fast_File()
 ff.load("c:/data/corpus/new-2.ff.npy")
-m = ReformerLanguageEngine()
-m.fit(ff)
+#m = ReformerLanguageEngine()
+#m.fit(ff)

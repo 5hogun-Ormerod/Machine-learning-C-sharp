@@ -6,7 +6,7 @@ class LinearHead(nn.Module):
     
     def __init__(self, input_dimensions, labels):
         super(LinearHead, self).__init__()
-                
+               
 
     def forward(self, input_matrix):
 

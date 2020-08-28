@@ -3,6 +3,7 @@ from torch.utils.data import Dataset
 from transformers.data.datasets import TextDataset
 from copy import deepcopy
 import torch
+import pandas as pd
 
 class DataSeriesSet(Dataset):
     
@@ -18,22 +19,29 @@ class DataSeriesSet(Dataset):
         return len(self.__data)
     
     def __getitem__(self, index):
-        return self.__data.iloc[i]
+        return self.data.iloc[i]
 
 
-class DataFrameSet(DataSeriesSet):
-        
+class DataFrameSet(Dataset):
+    
+    def __init__(self, data):
+        assert isinstance(data, pd.core.generic.NDFrame)
+        self.data = data
+
+    def __len__(self):
+        return len(self.__data)
+
     def __repr__(self):
-        desc = "Dataset(columns = {"
-        for k, c in enumerate(self.__data.columns):
+        desc = "Dataset(columns = ("
+        for k, c in enumerate(self.data.columns):
             if k != 0 :
                 desc = desc = ", "
             desc = desc + str(c)
-        desc = desc + "}, rows = {}".format(len(self))
+        desc = desc + "), rows = {}".format(len(self))
         return desc
         
     def __getitem__(self, index):
-        return self.__data.iloc[i].to_dict()
+        return self.data.iloc[index].to_dict()
     
     def column(self, label):
         return DataSeriesSet(self.__data[label])

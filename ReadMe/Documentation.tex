@@ -1,0 +1,19 @@
+\documentclass{amsproc}
+\usepackage{tikz}
+
+\begin{document}
+
+\title{Batman}
+\author{Chris Ormerod}
+\maketitle
+
+\section{NLP classes}
+
+\begin{tikzpicture}
+\node[rectangle, draw = blue, thick, rounded corners =2pt](str) at (0,0) {str};
+\node[rectangle, draw = blue, thick, rounded corners =2pt] at (2,0) {\begin{tabular}{l} TextSet \\ \hline iterator \end{tabular}};
+\node[rectangle, draw = blue, thick, rounded corners =2pt] at (5,0) {\begin{tabular}{l} Tokenizer \\ \hline tokenize \\ detokenize \\ encode \\ decode \\ fit \\ \hline vocab \end{tabular}};
+
+\end{tikzpicture}
+
+\end{document}

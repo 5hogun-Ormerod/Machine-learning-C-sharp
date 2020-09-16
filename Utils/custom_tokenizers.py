@@ -4,8 +4,8 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from nltk.tokenize import sent_tokenize
 import io
-from Utils.fileaccess import Fast_File
-from NeuralNetworks.core.tokenizer import tokenizer
+from Utils import Fast_File
+from core.tokenizer import tokenizer
 import gensim
 import sentencepiece
 
@@ -162,4 +162,11 @@ class sentencepiece_tokenizer(tokenizer):
     
     def encode(self, text):
         pass
+    
+    def load(self, path):
+        self.sp = sentencepiece.SentencePieceProcessor(path)
+
+    def save(self, path):
+        pass    
+    
 

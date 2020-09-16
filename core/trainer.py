@@ -39,6 +39,15 @@ def step_module(model : nn.Module,
     optimizer.step()
     
     if GPU == True:
-        
+
+
+class SequenceTrainer(object):
+    
+    def __init__(self):
+        pass
+    
+    def train(self):
+        pass
+    
         
     

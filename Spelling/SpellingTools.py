@@ -4,14 +4,13 @@ Created on Mon Jun 29 09:16:24 2020
 
 @author: Christopher Ormerod
 """
+from collections import Counter
 
-from VocabTreeNode import VocabTreeNode
-from Dictionary import words
-
-def count_vocab(dataset, tokenizer):
-    vocab = dict()
-    for data in dataset:
-        tokens = tokenizer.tokenize(data)
-        for token in tokens:
-            vocab[token] = vocab[token] + 1
-    return vocab
+def count_vocab(textset, 
+                tokenizer):
+    TokSet = tokenizer.tokenize_set(textset)
+    
+    for out in TokSet:
+        tokens = out['tokens']
+        for w in tokens:
+            

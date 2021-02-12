@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABC
+from core.data import TokenizedSet
 
 class tokenizer(ABC):
     
@@ -18,3 +19,7 @@ class tokenizer(ABC):
         
     def decode(self, iterable):
         raise NotImplementedError
+        
+    def tokenize_set(self, x):
+        return TokenizedSet(x, self)
+        

@@ -1,3 +1,5 @@
-import pandas as pd
+import ujson
+from collections import Counter
 
-words = set(pd.read_csv("c:/Data/corpus/words.txt",header=None)[0].map(str).map(lambda x:x.lower()))
+with open("C:/data/word_count.json",'r') as fp:
+    word_counter = Counter(ujson.load(fp))

@@ -3,13 +3,25 @@
 from nltk.tokenize import RegexpTokenizer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from nltk.tokenize import sent_tokenize
+
+from transformers import AutoTokenizer
 import io
 from Utils import Fast_File
 from core.tokenizer import tokenizer
 import gensim
 import sentencepiece
+import spacy
 
+class spacy_tokenizer(tokenizer):    
     
+    def __init__(self):
+        self.__nlp = spacy.load('en')
+        
+    def tokenize(self, text):
+        with self.__nlp.disable_pipes("tagger", "parser", "ner"):
+            doc = self.__nlp(text)
+        return [str(x) for x in doc]
+
 class word_tokenizer(tokenizer):
     
     def __init__(self):
@@ -170,3 +182,8 @@ class sentencepiece_tokenizer(tokenizer):
         pass    
     
 
+def pretrained_tokenizer(tokenizer):
+    
+    def __init__(self, pretrained_type):
+        self.pretrained_type = pretrained_type
+        self.tokenizer = AutoTokenizer.from_pretrained(pretrained_type)

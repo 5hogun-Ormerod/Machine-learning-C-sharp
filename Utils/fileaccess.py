@@ -80,29 +80,26 @@ class Fast_File(Dataset):
         assert os.path.exists(file), "File not found"
         self.file = file
         self.linepoints = deque()
-        self.linepoints.append(0)
-        pos = 0
-        with open(file,'r') as fp:
-            
+        self.linepoints.append(-1)
+        with open(file,'r+', encoding='utf-8') as fp:
+            mm = mmap.mmap(fp.fileno(),0 )        
             # This loop iterates through the file and appends each position
             # of an endline character. 
             qbar = tqdm(range(os.path.getsize(self.file)))
-            for _ in qbar:
-                c = fp.read(1)
+            for i in qbar:
+                c = mm[i:i+1].decode()
                 if not c:
                     break
                 if c == '\n':
-                    self.linepoints.append(pos)
-                    pos += 1
+                    self.linepoints.append(i)
                     # This is due to the endline being preceeded by the 
                     # linebreak.
                     
                     if len(self.linepoints) % 1000 == 0:
                         qbar.set_description("{} lines read".format(len(self.linepoints)))
-                pos += 1
-        self.fp = open(self.file,'r+')
+        self.fp = open(self.file,'r+', encoding='utf-8')
         self.mm = mmap.mmap(self.fp.fileno(),0 )
-        self.linepoints.append(pos)
+        self.linepoints.append(i)
         self.linepoints = list(self.linepoints)
         if self.shuffle == True:
             self.order = list(range(len(self)))
@@ -126,7 +123,7 @@ class Fast_File(Dataset):
             Return the i-th line of the file
 
         """
-        out = self.mm[self.linepoints[i]+2:self.linepoints[i+1]]
+        out = self.mm[self.linepoints[i]+1:self.linepoints[i+1]]
         if self.string == True:
             return out.decode("utf-8", "ignore")
         else:
